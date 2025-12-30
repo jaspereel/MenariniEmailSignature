@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Menarini Taiwan Signature_2026</title>
+    <style>
+        body { font-family: "Calibri", "MYRIAD"; padding: 30px; background-color: #f8f9fa; line-height: 1.5; }
+        .main-container { max-width: 950px; margin: 0 auto; display: flex; gap: 30px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .form-panel { flex: 1; }
+        .preview-panel { flex: 1.4; border-left: 1px solid #eee; padding-left: 30px; }
+        .form-group { margin-bottom: 15px; }
+        
+        /* 修正選擇器跑版問題 */
+        .type-selector { margin-bottom: 20px; padding: 15px; background: #fff5f5; border-radius: 4px; border: 1px solid #fbdada; }
+        .type-selector label { display: inline-flex; align-items: center; margin-right: 20px; cursor: pointer; font-weight: bold; }
+        .type-selector input[type="radio"] { margin-right: 8px; cursor: pointer; }
+        
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .required { color: #ed1c24; margin-left: 3px; }
+        .copy-btn { background: #ed1c24; color: white; border: none; padding: 15px; width: 100%; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px; }
+        .copy-btn:hover { background: #c8161d; }
+        #sig-container { padding: 15px; border: 1px dashed #ccc; background: #fff; min-height: 350px; }
+        .hint { font-size: 12px; color: #666; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="form-panel">
+        <h2 style="color: #ed1c24; margin-top: 0;">資訊輸入</h2>
+        
+        <div class="type-selector">
+            <span style="display:block; margin-bottom: 10px; font-weight: bold; font-size: 14px;">請選擇身份類型：</span>
+            <label for="typeStaff">
+                <input type="radio" name="userType" value="staff" id="typeStaff" checked onclick="toggleType()"> 內勤同仁
+            </label>
+            <label for="typeSales">
+                <input type="radio" name="userType" value="sales" id="typeSales" onclick="toggleType()"> 業務同仁
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>Name (姓名)<span class="required">*</span></label>
+            <input type="text" id="inName" placeholder="如: Jasper Lee" oninput="update()">
+        </div>
+        <div class="form-group">
+            <label>Designation (職稱)<span class="required">*</span></label>
+            <input type="text" id="inTitle" placeholder="如: IT Engineer" oninput="update()">
+        </div>
+
+        <div id="extInputGroup" class="form-group">
+            <label>Ext (分機)<span class="required">*</span></label>
+            <input type="text" id="inExt" placeholder="如: 131" oninput="update()">
+        </div>
+
+        <div class="form-group">
+            <label id="mobileLabel">Mobile (手機)</label>
+            <input type="text" id="inMobile" placeholder="如: 912 345 678" oninput="update()">
+            <p id="mobileHint" class="hint"></p>
+        </div>
+
+        <button class="copy-btn" onclick="copySig()">複製簽名檔內容</button>
+        <p class="hint">※ 複製後請至 Gmail 簽名檔設定處「貼上」即可。</p>
+    </div>
+
+    <div class="preview-panel">
+        <h2 style="margin-top: 0;">即時預覽</h2>
+        <div id="sig-container">
+            <div id="menarini-signature" style="font-family: Calibri; color: #000; line-height: 1.2;">
+                <p style="margin: 0 0 10px 0; font-size: 14px;">Regards,</p>
+                <p style="margin: 0; font-size: 15px; font-weight: bold;"><span id="outName">User Name</span></p>
+                <p style="margin: 0 0 15px 0; font-size: 14px; color: #333;"><span id="outTitle">User Designation</span></p>
+                
+                <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 10px;">
+                    <tr>
+                        <td>
+                            <img src="https://lh3.googleusercontent.com/rd-d/ALs6j_ENuPEzuoCu9ucCEaxALbUKSblJuD0Jz_hjxF9E_u9YIYatnoZO1L9ZDohCdoRled5wECBfIxry1n2DxJT2yeQJvjjFUBIARN0gxWVqVylobjnWTXIHZlMM8PVGUWBowLELaSE3bH09R1MwYEbdEPVMMQUMI4m9RAmhFEXfV048__9yWIAUIWvAfcJF2LqSy8CoXIbgHZQDJyrWf4JEQFl-2JJev6as45YYIovOFTytDJ2p-vlSsEPxWCkqmsf8yPbhTG-cFDh-eZS5Saum2j9SYhNr_NrR8ru9eNHVDaaurkdQlyjD09NFAPG3FEp6UENIQSRtMJeDo0I7pB-tMbl2iZDqgAbNJL9qgTfqYh8YtlMSej8w5NS_vHWq7p9oxhyFDGWtDw1MrQVeL4L6MTOSnbv7aemDi9p9VLCPXjrKYVs4h6maKxiiSGgEJffAk3xfiOc5ZcbVCTRfCVG_RHhao46vy_OaO2JsG8952U8hjQ5FGMO8F3BWjszcZvV64pO7n96oLbVl4OiGB8SLmdRTiYveVbREuZJVdzFnSRxMNMUV1FNdiT4ilLSZkUukx5hM3T9MFM5BgwL0AfASnCg0rxDzmnECgwUZrBUJOj48zsPKntdCORRwI0iIJGtKshoFTFOQiYWJvz1TC5ZtQnutAhGgQ6kqCtGlcElX_E7Ezrk_s8_okMjS2pqwJE8_Ioid-uaP9ugge-L0GebHWrp5n4bTEaA45ynJTiurp_YnpPau_z-SHA0JMDgW5Ddsb5d06L0yyO86FHkoi269FVS6t-nJ9TV_OMwMwXANfZHyl5rDhSZwfULLuNXiEtDn2Gy-Z3vQNokLRRFypt0xVGBa_NLSIlcB2SLQ9f1G_fySC-jthGJ6FJWfkouH7Iu2rWaDRfLIHE4K5sw1uUQzNOAXzHDRPwNpWJ7m9bHtl4wepYUfmfbCMDQ6AwikfekOf4t2BnyxBkttaA7mgfIUEEIjTylEmnq2k8vUtm22ozREN5zXv0Rvih8NanxBC89bDmuriplSUvw2=w1437-h911?auditContext=prefetch" alt="MenariniLogo" width="200" style="display: block;">
+                        </td>
+                    </tr>
+                </table>
+
+                <p style="margin: 0; font-size: 14px; font-weight: bold; color: #333;">A. Menarini Singapore Pte. Ltd., Taiwan Branch</p>
+                <p style="margin: 0; font-size: 14px; color: #333;">9F.-2, No. 2, Sec. 3, Minsheng E. Rd., Zhongshan Dist., Taipei City 104, Taiwan (R.O.C.)</p>
+                
+                <p style="margin: 0; font-size: 14px; color: #333;">
+                    <span style="Color:red">T: </span><span> +(886) 2 27081863</span> 
+                    <span id="dispExt"> # <span id="outExt">XXX</span></span>
+                    &nbsp;&nbsp;
+                    <span id="dispMobile"><span style="Color:red">M: </span> (886) <span id="outMobile">9XX XXX XXX</span>&nbsp;&nbsp;</span>
+                    <span style="Color:red">F: </span> +(886) 2 27081893
+                </p>
+                
+                <p style="margin: 5px 0 15px 0; font-size: 14px;">
+                    <a href="http://www.menariniapac.com.tw" style="color: #ed1c24; text-decoration: none;">www.menariniapac.com.tw</a>
+                </p>
+
+                <div>
+                    <img src="https://lh3.googleusercontent.com/rd-d/ALs6j_GWkCVSERfQz8-OukrQTuQqY02mFgmSNKmlabXh7w8lAhhTf7Fs3OxWsaZtfTXOXOgsPm29io85NGpV4v5fF88sbPZZ9ZaP7gF1VDViK4luLXvdxhWGzh9at80mcL_oQR6SsNN7d7_IFLrCIE9cU5Om98u1nl8jDUuU6jv_QIcoE3Y56RLs6HohZE0ygFm-TyWuBF8a94A4pxAobP4qkWEKXo22Igx2qlgr13QJIihWB0DXxXYR4ZtkjRVIxLcyUDCGArD9PvFu62WSpS3U0rT3OgWYf9woZxJLsuBSMTKtx7ua9ZEb2EEzsIjTfqKRzYKP4buOKRSooSH2nXLc5ih3AkhQi7_WqkFzehAXtZy1nbDfKlNltM4nXDi_P7Pz2m0VdpBJ_Yi1-HdqtkCvHImjhKFylJ5wYQy3NMTNbVe4BpMrs22eEheLmCkRT3baV7fQ0tWu5vfdtcox29013tlHSdVRHHRE1AZbaH9jpy-E4acjlSGCwe8nHQ8U9bvsVft53T429uIAkkv5tzV0fhsM_o6hC5PdarCSeS5onGkURtBUZmhl4SEA-iHgdJybvTwS8hmTtnxb3M5C_J6ZHWdAGvcOaZsn-kibeW50BEc4wp-_nRgvEqGE7i9sl-_w08dbKu4RK4KnFotC_qgFRcNzX-qTTN-17bJ-X8dwadfIxaqvPz_p4uIVj9iilnTpbLy-zFaiZ9HkYqTrT6pHk3Ye8Npqk4Ylgw97TNOZGVND_RgTEK--LgIbgUdv_hs09VLLDnRJl0vicPFisX1ykeOhw69eRbzMWhtT4MVM6c3HjsssjCzw9mTcB5hOXk8jQCQxulLs4sfyUCH0tljgRbyW5vcW_EVbWRY_e6UnjM7bucGFZtvAK8KUCzqdgs8GByV8w8vk8Ff2aNXDTNcJpcbcsku_jiwpbs_K44wYr813ItbRJaxJJ6aqwL3wndEJAbMtcltuHzGWQlY2_WwxcOyTieer1OALfa96X1tPYvBaaFMa9XEUFIOLUtN6JTF9w0F5iRBTqoQ=w1437-h911?auditContext=prefetch" alt="InvigoratingLives" Width="500px" style="display: block;">
+                </div>
+
+                <div style="margin: 5px 0 0 0;width: 500px; font-size: 12px; color: #333; line-height: 1.2; text-align: justify; font-style: italic">
+                    This message may contain information which is confidential and privileged to Menarini Asia-Pacific. If you are not the intended addressee, please notify Menarini Asia-Pacific by return email immediately, and delete the message and the reply (if it contains the original message) from your computer. Any use, copying, transmission, or disclosure of the message or any information contained therein to anyone for any purpose other than as permitted by the Menarini Asia-Pacific is strictly prohibited and any such use may result in legal proceedings. Menarini Asia-Pacific does not guarantee and is not liable for the security of any information electronically transmitted or for the proper and complete transmission of the information contained in this communication, or for any delay in its receipt.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleType() {
+        const type = document.querySelector('input[name="userType"]:checked').value;
+        const extInputGroup = document.getElementById('extInputGroup');
+        const mobileLabel = document.getElementById('mobileLabel');
+        const mobileHint = document.getElementById('mobileHint');
+        const dispExt = document.getElementById('dispExt');
+
+        if (type === 'staff') {
+            extInputGroup.style.display = 'block';
+            dispExt.style.display = 'inline'; // 顯示分機
+            mobileLabel.innerHTML = 'Mobile (手機) <span style="font-weight:normal; color:#888;">(選填)</span>';
+            mobileHint.innerText = '內勤同仁可不填，不填則不顯示。';
+        } else {
+            extInputGroup.style.display = 'none';
+            dispExt.style.display = 'none'; // 隱藏分機，但 T: +886... 會保留
+            mobileLabel.innerHTML = 'Mobile (手機)<span class="required">*</span>';
+            mobileHint.innerText = '業務同仁手機為必填。';
+        }
+        update();
+    }
+
+    function update() {
+        const type = document.querySelector('input[name="userType"]:checked').value;
+        
+        document.getElementById('outName').innerText = document.getElementById('inName').value || 'User Name';
+        document.getElementById('outTitle').innerText = document.getElementById('inTitle').value || 'User Designation';
+        document.getElementById('outExt').innerText = document.getElementById('inExt').value || 'XXX';
+
+        const mobileVal = document.getElementById('inMobile').value;
+        const dispMobile = document.getElementById('dispMobile');
+        
+        if (type === 'staff' && !mobileVal) {
+            dispMobile.style.display = 'none';
+        } else {
+            dispMobile.style.display = 'inline';
+            document.getElementById('outMobile').innerText = mobileVal || (type === 'sales' ? '9XX XXX XXX' : '');
+        }
+    }
+
+    function copySig() {
+        const range = document.createRange();
+        range.selectNode(document.getElementById('menarini-signature'));
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        try {
+            document.execCommand('copy');
+            alert('簽名檔已複製！請至 Gmail 設定處貼上。');
+        } catch (err) {
+            alert('複製失敗，請手動選取右側內容進行複製。');
+        }
+    }
+    toggleType();
+</script>
+
+</body>
+</html>
